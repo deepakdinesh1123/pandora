@@ -9,7 +9,8 @@ Users can also share their dockerfiles with other users and access to developmen
 This is still an incomplete project and I will be adding database functions and frontend client soon.
 
 # Architecture
-![Architecture Diagram](images/Architecture_Diagram.png)
+![Architecture_Diagram](https://user-images.githubusercontent.com/52698821/193321461-67ee8ccb-faab-4a3f-be1a-44564f8f701d.png)
+
 
 
 
