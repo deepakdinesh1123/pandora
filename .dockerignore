@@ -1,0 +1,11 @@
+# next js build files and node_modules
+client/.next/
+client/node_modules
+
+
+__pycache__
+
+
+.vscode
+.gitignore
+.git

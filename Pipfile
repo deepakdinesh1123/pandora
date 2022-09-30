@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = {extras = ["all"], version = "*"}
+motor = "*"
+redis = "*"
+rq = "*"
+sse-starlette = "*"
+docker = "*"
+
+[dev-packages]
+pre-commit = "*"
+
+[requires]
+python_version = "3.10"
