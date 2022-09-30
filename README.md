@@ -1,4 +1,4 @@
-# Pandora's Boxes
+# Pandora's Box
 
 This repository contains the code for the backend of the cloud-ide project that I am currently working on. 
 
