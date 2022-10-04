@@ -10,7 +10,6 @@ services:
     build:
       context: .
       dockerfile: dockerfiles/redis-worker.dockerfile
-    command: rq worker --url redis://redis:6379
     depends_on:
       - redis
     links:

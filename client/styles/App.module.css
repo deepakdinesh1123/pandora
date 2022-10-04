@@ -1,0 +1,19 @@
+.terminal {
+    font-family: sans-serif;
+    text-align: center;
+    background: #2e2c2c;
+    overflow: hidden;
+}
+
+#root-body {
+    background-color: #2e2c2c;
+    height: 100%;
+}
+
+.codeeditor {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    color: white;
+    margin-bottom: 0px;
+}

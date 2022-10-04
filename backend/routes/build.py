@@ -38,10 +38,10 @@ def build_image(image: DockerImage):
         f.writelines(image.dockerfile)
     try:
         task = build_task_queue.enqueue(build_docker_image, image.name, image.tag)
+        response_object = {"status": "success", "build_id": task.get_id()}
     except Exception as e:
         print(str(e))
         response_object = {"status": "Failure"}
-    response_object = {"status": "success", "build_id": task.get_id()}
     return response_object
 
 
