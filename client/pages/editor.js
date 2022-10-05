@@ -1,9 +1,10 @@
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import 'styles/index.module.css';
 import { ClockLoader as Loader } from "react-spinners";
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import { io } from 'socket.io-client';
 
 const CodeTerminal = dynamic(() => import('../components/CodeTerminal'), {
     ssr: false
@@ -17,7 +18,7 @@ const CodeEditor = dynamic(() => import('../components/CodeEditor'), {
 export default function Editor() {
 
     const [editorValue, setEditorValue] = useState(null);
-    const [terminalValue, setTerminalValue] = useState("");
+    const terminalRef = useRef("");
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
@@ -26,8 +27,8 @@ export default function Editor() {
     }
 
     function handleTerminalKeyPress(newValue) {
-        setTerminalValue(terminalValue + newValue);
-        console.log(terminalValue);
+        terminalRef.current += newValue;
+        console.log(terminalRef);
     }
 
     useEffect(() => {
@@ -65,6 +66,14 @@ export default function Editor() {
             })
         }
         startContainer();
+        // const socket = io("http://localhost:8080/execute/sleep");
+        // socket.on("connection", () => {
+        //     alert("Connection established");
+        // });
+        // socket.on("connect_error", () => {
+        //     console.log("Couuld not establish connection");
+        // });
+        // socket.emit("")
     }, [])
 
 
