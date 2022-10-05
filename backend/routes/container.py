@@ -38,4 +38,7 @@ def create_container(container: Container):
             )
         except Exception as e:
             print(e)
-    return container.container_name
+    return {
+        "container_status": "running",
+        "container_name": container.container_name
+    }
