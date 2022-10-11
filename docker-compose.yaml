@@ -6,16 +6,6 @@ services:
     ports:
       - 6379:6379
 
-  redis-worker:
-    build:
-      context: .
-      dockerfile: dockerfiles/redis-worker.dockerfile
-    command: rq worker --url redis://redis:6379
-    depends_on:
-      - redis
-    links:
-      - redis
-
   monogo-db:
     image: mongo:latest
     ports:
