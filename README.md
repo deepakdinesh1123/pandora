@@ -38,6 +38,10 @@ This is still an incomplete project and I will be adding database functions and 
     ```
     docker-compose up
     ```
+- Run the redis worker using the command
+   ```
+   rq worker --with-scheduler
+   ```
 - Run the API using
     ```
     python main.py
