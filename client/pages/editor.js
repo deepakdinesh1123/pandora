@@ -4,7 +4,7 @@ import 'styles/index.module.css';
 import { ClockLoader as Loader } from "react-spinners";
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { io } from 'socket.io-client';
+// var webSocketClient = require('websocket').client;
 
 const CodeTerminal = dynamic(() => import('../components/CodeTerminal'), {
     ssr: false
@@ -21,14 +21,28 @@ export default function Editor() {
     const terminalRef = useRef("");
     const [loading, setLoading] = useState(true);
     const router = useRouter();
+    const [ws, setWs] = useState(null);
 
     function handleEditorChange(newValue) {
         setEditorValue(newValue);
     }
 
     function handleTerminalKeyPress(newValue) {
-        terminalRef.current += newValue;
-        console.log(terminalRef);
+        if (newValue == "Enter") {
+            ws.send(terminalRef.current);
+            terminalRef.current = "";
+            ws.onmessage = (e) => {
+                console.log(e.data);
+                alert(e.data);
+            }
+        }
+        else if (newValue == "Backspace") {
+            terminalRef.current = terminalRef.current.slice(0, -1);
+        }
+        else {
+            terminalRef.current += newValue;
+        }
+
     }
 
     useEffect(() => {
@@ -66,14 +80,12 @@ export default function Editor() {
             })
         }
         startContainer();
-        // const socket = io("http://localhost:8080/execute/sleep");
-        // socket.on("connection", () => {
-        //     alert("Connection established");
-        // });
-        // socket.on("connect_error", () => {
-        //     console.log("Couuld not establish connection");
-        // });
-        // socket.emit("")
+        setWs(new WebSocket("ws://localhost:8080/execute/sleep"));
+
+
+        return () => {
+            ws.close();
+        }
     }, [])
 
 
@@ -94,7 +106,6 @@ export default function Editor() {
                         }
                         {
                             loading ? (<Loader />) : <CodeTerminal
-                                terminalValue={terminalValue}
                                 onKeyDown={handleTerminalKeyPress}
                             />
                         }

@@ -6,15 +6,6 @@ services:
     ports:
       - 6379:6379
 
-  redis-worker:
-    build:
-      context: .
-      dockerfile: dockerfiles/redis-worker.dockerfile
-    depends_on:
-      - redis
-    links:
-      - redis
-
   monogo-db:
     image: mongo:latest
     ports:

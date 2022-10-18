@@ -1,7 +1,7 @@
-FROM python:3.10-bullseye
+FROM python:3.10
 
 COPY backend/ /pandora/backend/
-WORKDIR /pandora
+WORKDIR /pandora/
 
 # RUN apt-get update && apt -y upgrade
 # RUN apt install -y python3

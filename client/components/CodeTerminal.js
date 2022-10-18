@@ -45,14 +45,15 @@ export default function CodeTerminal(props) {
 
     fitAddon.fit();
     term.focus();
+    term.write("$");
 
     term.onKey(key => {
       const char = key.domEvent.key;
       if (char === "Enter") {
-        term.write("\n");
-        props.onKeyDown("");
+        term.write("\n$");
+        props.onKeyDown("Enter");
       } else if (char === "Backspace") {
-        props.onKeyDown("-");
+        props.onKeyDown("Backspace");
         term.write("\b \b");
       } else {
         term.write(char);
