@@ -5,6 +5,15 @@ from fastapi import APIRouter, WebSocket
 from backend.task_queue import execution_task_queue
 from backend.tasks.execute_tasks import execute_task
 
+import logging
+
+logger = logging.getLogger(__name__)
+handler = logging.FileHandler('socket.log')
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+logger.addHandler(handler)
+
 router = APIRouter()
 
 
@@ -25,6 +34,7 @@ async def execute(websocket: WebSocket, container_name: str):
         task = execution_task_queue.enqueue(execute_task, container_name, command)
         task_id = task.get_id()
         resp = await get_execution_status(task_id)
+        logger.debug(f"Response: {resp}")
         await websocket.send_text(resp)
 
 
@@ -41,6 +51,7 @@ async def get_execution_status(task_id):
     while True:
         status = task.get_status()
         if status == "finished":
+            logger.debug(f"task result: {task.result}")
             return task.result
         else:
             time.sleep(3)

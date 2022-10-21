@@ -50,14 +50,14 @@ export default function CodeTerminal(props) {
     term.onKey(key => {
       const char = key.domEvent.key;
       if (char === "Enter") {
+        props.onKeyDown(term, "Enter");
         term.write("\n$");
-        props.onKeyDown("Enter");
       } else if (char === "Backspace") {
-        props.onKeyDown("Backspace");
+        props.onKeyDown(term, "Backspace");
         term.write("\b \b");
       } else {
+        props.onKeyDown(term, char);
         term.write(char);
-        props.onKeyDown(char);
       }
     });
 

@@ -4,7 +4,6 @@ import 'styles/index.module.css';
 import { ClockLoader as Loader } from "react-spinners";
 import { useRouter } from 'next/router';
 import axios from 'axios';
-// var webSocketClient = require('websocket').client;
 
 const CodeTerminal = dynamic(() => import('../components/CodeTerminal'), {
     ssr: false
@@ -27,14 +26,15 @@ export default function Editor() {
         setEditorValue(newValue);
     }
 
-    function handleTerminalKeyPress(newValue) {
+    function handleTerminalKeyPress( newValue, term=null) {
         if (newValue == "Enter") {
             ws.send(terminalRef.current);
             terminalRef.current = "";
             ws.onmessage = (e) => {
-                console.log(e.data);
-                alert(e.data);
+                console.log("http");
+                term.write(e.data);
             }
+            
         }
         else if (newValue == "Backspace") {
             terminalRef.current = terminalRef.current.slice(0, -1);
@@ -42,7 +42,6 @@ export default function Editor() {
         else {
             terminalRef.current += newValue;
         }
-
     }
 
     useEffect(() => {
