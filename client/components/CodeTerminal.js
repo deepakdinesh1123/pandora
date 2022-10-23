@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Terminal } from "xterm";
-import { AttachAddon } from "xterm-addon-attach";
 import { FitAddon } from "xterm-addon-fit";
 import { WebLinksAddon } from "xterm-addon-web-links";
 
@@ -50,13 +49,12 @@ export default function CodeTerminal(props) {
     term.onKey(key => {
       const char = key.domEvent.key;
       if (char === "Enter") {
-        props.onKeyDown(term, "Enter");
-        term.write("\n$");
+        props.onKeyDown("Enter", term);
       } else if (char === "Backspace") {
-        props.onKeyDown(term, "Backspace");
+        props.onKeyDown("Backspace", term);
         term.write("\b \b");
       } else {
-        props.onKeyDown(term, char);
+        props.onKeyDown(char, term);
         term.write(char);
       }
     });

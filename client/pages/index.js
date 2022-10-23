@@ -4,10 +4,6 @@ import 'styles/index.module.css';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-const CodeTerminal = dynamic(() => import('../components/CodeTerminal'), {
-  ssr: false
-});
-
 const CodeEditor = dynamic(() => import('../components/CodeEditor'), {
   ssr: false
 })
@@ -17,7 +13,7 @@ export default function Home() {
   const router = useRouter();
   const [editorValue, setEditorValue] = useState("# write your dockerfile here");
 
-  function handleEditorChange(newValue) {
+  function handleEditorChange(newValue, editor=null) {
     setEditorValue(newValue);
   }
 
@@ -59,6 +55,7 @@ export default function Home() {
             < CodeEditor
               codeEditorValue={editorValue}
               onChange={handleEditorChange}
+              defaultLanguage={"dockerfile"}
             />
           </div>
         </div>

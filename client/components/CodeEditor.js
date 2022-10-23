@@ -19,9 +19,9 @@ export default function CodeEditor(props) {
     <>
       <div className="codeeditor" style={{ height: '660px' }}>
         <Editor
-          height="calc(100% - 0px)" // By default, it fully fits with its parent
+          height="calc(100% - 0px)"
           theme={theme}
-          defaultLanguage="dockerfile"
+          defaultLanguage={props.defaultLanguage}
           value={props.codeEditorValue}
           onMount={handleEditorDidMount}
           onChange={handleEditorChange}

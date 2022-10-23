@@ -16,27 +16,31 @@ const CodeEditor = dynamic(() => import('../components/CodeEditor'), {
 
 export default function Editor() {
 
-    const [editorValue, setEditorValue] = useState(null);
+    const editorRef = useRef("");
     const terminalRef = useRef("");
     const [loading, setLoading] = useState(true);
     const router = useRouter();
-    const [ws, setWs] = useState(null);
 
     function handleEditorChange(newValue) {
-        setEditorValue(newValue);
+        editorRef.current = newValue;
     }
 
-    function handleTerminalKeyPress( newValue, term=null) {
-        if (newValue == "Enter") {
-            ws.send(terminalRef.current);
+    function handleTerminalKeyPress(newValue, term = null) {
+        if (newValue === "Enter") {
+            axios.post("http://localhost:8080/execute/req/sleep/",
+                {
+                    "user_command": terminalRef.current,
+                    "editor_content": editorRef.current
+                }
+            ).then((res) => {
+                term.write(`\n${res['data']}\n`);
+                term.write("$");
+            }).catch(e => {
+                console.log(e);
+            })
             terminalRef.current = "";
-            ws.onmessage = (e) => {
-                console.log("http");
-                term.write(e.data);
-            }
-            
         }
-        else if (newValue == "Backspace") {
+        else if (newValue === "Backspace") {
             terminalRef.current = terminalRef.current.slice(0, -1);
         }
         else {
@@ -79,12 +83,6 @@ export default function Editor() {
             })
         }
         startContainer();
-        setWs(new WebSocket("ws://localhost:8080/execute/sleep"));
-
-
-        return () => {
-            ws.close();
-        }
     }, [])
 
 
@@ -98,9 +96,9 @@ export default function Editor() {
                     <div style={{ height: '500px', backgroundColor: 'black' }}>
                         {
                             loading ? (<Loader />) : <CodeEditor
-                                codeEditorValue={editorValue}
+                                codeEditorValue={editorRef.current}
                                 onChange={handleEditorChange}
-
+                                defaultLanguage={"python"}
                             />
                         }
                         {
