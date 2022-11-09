@@ -103,6 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
+# Next.JS ENV variables
+.env.local
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

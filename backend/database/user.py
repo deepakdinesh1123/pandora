@@ -4,7 +4,7 @@ from backend.database.exceptions import UserAlreadyExists
 from backend.mongodb import db_client
 
 database = db_client.users
-user_collection = database.get_collection("users_collection")
+user_collection = database.get_collection("users")
 
 
 def user_helper(user) -> dict:
@@ -26,7 +26,7 @@ async def get_user(id: str):
 
 async def add_user(user_data: dict):
     user = user_collection.find_one({"name": user_data["name"]})
-    if not user:
+    if user:
         raise UserAlreadyExists
     user = await user_collection.insert_one(user_data)
     new_user = await user_collection.find_one({"_id": user.inserted_id})
