@@ -13,10 +13,7 @@ export default function Environments() {
                     code: code
                 }
             })
-
-        }
-        else {
-            // TODO write logic for already logged in users
+            localStorage.setItem("User", "Logged in");
         }
     }, []);
 
