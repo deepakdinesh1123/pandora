@@ -1,5 +1,3 @@
-import motor.motor_asyncio
+import pymongo
 
-MONGO_DETAILS = "mongodb://localhost:27017"
-
-db_client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
+db_client = pymongo.MongoClient("localhost", 27017)
