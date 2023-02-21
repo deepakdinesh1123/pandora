@@ -34,7 +34,7 @@ def build_image(image: DockerImage):
     :returns: JSON object with the status and the build_id
               which can be used to check the image build status.
     """
-    with open(f"/tmp/{image.name}.dockerfile", "w") as f:
+    with open(f"./user-dockerfiles/{image.name}.dockerfile", "w+") as f:
         f.writelines(image.dockerfile)
     try:
         task = build_task_queue.enqueue(build_docker_image, image.name, image.tag)

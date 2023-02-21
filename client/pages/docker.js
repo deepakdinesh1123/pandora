@@ -47,7 +47,6 @@ export default function Home() {
       <div id="index-root">
         <div id="root">
           <div>
-            <p style={{ color: 'black', margin: '4px', padding: '5px', border: '1px solid black' }}>Navbar</p>
             <button onClick={submit} > Submit</button>
           </div>
 

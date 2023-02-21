@@ -13,9 +13,9 @@ def build_docker_image(image_name: str, image_tag: str) -> str:
     :returns: A string of the format 'image_name:image_tag'
     """
     client.images.build(
-        path="/tmp/",
+        path="./user-dockerfiles/",
         dockerfile=f"{image_name}.dockerfile",
         tag=f"{image_name}:{image_tag}",
     )
-    os.remove(f"/tmp/{image_name}.dockerfile")
+    os.remove(f"./user-dockerfiles/{image_name}.dockerfile")
     return f"{image_name}:{image_tag}"

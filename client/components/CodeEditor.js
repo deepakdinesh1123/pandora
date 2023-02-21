@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import "styles/app.module.css";
+import "styles/App.module.css";
 
 import Editor from "@monaco-editor/react";
 

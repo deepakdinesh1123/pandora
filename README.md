@@ -41,5 +41,6 @@ This is still an incomplete project and I will be adding database functions and 
 - Run the API using
     ```
     python main.py
+    sudo -u deepak /home/deepak/pyenvs/pandora/bin/python3 main.py
     ```
 

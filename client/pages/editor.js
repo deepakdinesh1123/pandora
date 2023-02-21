@@ -90,9 +90,6 @@ export default function Editor() {
         <>
             <div id="index-root">
                 <div id="root">
-                    <div>
-                        <p style={{ color: 'black', margin: '4px', padding: '5px', border: '1px solid black' }}>Navbar</p>
-                    </div>
                     <div style={{ height: '500px', backgroundColor: 'black' }}>
                         {
                             loading ? (<Loader />) : <CodeEditor
