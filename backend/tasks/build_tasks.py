@@ -17,5 +17,4 @@ def build_docker_image(image_name: str, image_tag: str) -> str:
         dockerfile=f"{image_name}.dockerfile",
         tag=f"{image_name}:{image_tag}",
     )
-    os.remove(f"./user-dockerfiles/{image_name}.dockerfile")
     return f"{image_name}:{image_tag}"

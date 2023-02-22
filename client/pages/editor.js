@@ -20,17 +20,25 @@ export default function Editor() {
     const terminalRef = useRef("");
     const [loading, setLoading] = useState(true);
     const router = useRouter();
+    const { build_id, image_name, image_tag} = router.query;
 
     function handleEditorChange(newValue) {
         editorRef.current = newValue;
     }
 
     function handleTerminalKeyPress(newValue, term = null) {
+
         if (newValue === "Enter") {
-            axios.post("http://localhost:8080/execute/req/sleep/",
+            const inp = document.getElementById('filename');
+            const filename = inp.value;
+            if(filename === "") {
+                alert("Filename not present");
+            }
+            axios.post(`http://localhost:8080/execute/req/${image_name}/`,
                 {
                     "user_command": terminalRef.current,
-                    "editor_content": editorRef.current
+                    "editor_content": editorRef.current,
+                    "filename": filename
                 }
             ).then((res) => {
                 term.write(`\n${res['data']}\n`);
@@ -49,31 +57,42 @@ export default function Editor() {
     }
 
     useEffect(() => {
+
+        let build_status = "unfinished";
+
+        function waitTillBuild(evtSource) {
+            return new Promise((resolve) => {
+                evtSource.addEventListener("end", (event) => {
+                    build_status = "finished";
+                    setLoading(false);
+                    evtSource.close();
+                    resolve();
+                })
+            })
+        }
+        
         const containerCreated = () => {
             let build_id = router.query.build_id;
-            let build_status = "unfinished";
-
-
             const evtSource = new EventSource(`http://localhost:8080/build_image/${build_id}`);
             evtSource.addEventListener("update", (event) => {
                 console.log(event);
             })
-            evtSource.addEventListener("end", (event) => {
-                build_status = "finished";
-                setLoading(false);
-                evtSource.close();
+            // evtSource.addEventListener("end", (event) => {
+            //     build_status = "finished";
+            //     setLoading(false);
+            //     evtSource.close();
+            // })
+            waitTillBuild(evtSource).then(() => {
+                console.log("Built");
             })
         }
         containerCreated();
         const startContainer = () => {
-            let image_name = router.query.image_name;
-            let container_name = "sleep";
             let container_settings = {};
-
             axios.post("http://localhost:8080/create_container",
                 {
                     'image_name': image_name,
-                    'container_name': container_name,
+                    'container_name': image_name,
                     'container_settings': container_settings
                 }
             ).then((res) => {
@@ -90,12 +109,18 @@ export default function Editor() {
         <>
             <div id="index-root">
                 <div id="root">
+                    <div style={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "black", color: "white", padding: "10px"}}>
+                        <div style={{}}> E D I T O R </div>
+                    </div>
+                    <div>
+                        <input type='text' id='filename' placeholder='Enter filename'></input>
+                    </div>
                     <div style={{ height: '500px', backgroundColor: 'black' }}>
                         {
                             loading ? (<Loader />) : <CodeEditor
                                 codeEditorValue={editorRef.current}
                                 onChange={handleEditorChange}
-                                defaultLanguage={"python"}
+                                defaultLanguage={"java"}
                             />
                         }
                         {

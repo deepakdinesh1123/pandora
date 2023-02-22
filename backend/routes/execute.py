@@ -13,6 +13,7 @@ router = APIRouter()
 class Command(BaseModel):
     user_command: str
     editor_content: str
+    filename: str
 
 
 async def get_execution_status(task_id):
@@ -42,7 +43,7 @@ async def execute(command: Command, container_name: str):
                     contents of the editor
     :container_name: Name of the container
     """
-    with open('/tmp/temp.py', 'w') as f:
+    with open(f'/tmp/{command.filename}', 'w') as f:
         f.writelines(command.editor_content)
 
     # TODO Add support for tarfile
@@ -52,9 +53,9 @@ async def execute(command: Command, container_name: str):
     # container = client.containers.get("sleep")
     # container.put_archive("/", tarfile.open('/tmp/exec.tar.gz'))
 
-    container_id = client.containers.get("sleep").id
+    container_id = client.containers.get(container_name).id
 
-    subprocess.run(["docker", "cp", "/tmp/temp.py", f"{container_id}:/temp.py"])
+    subprocess.run(["docker", "cp", f"/tmp/{command.filename}", f"{container_id}:/{command.filename}"])
 
     task = execution_task_queue.enqueue(execute_task, container_name, command.user_command)
     task_id = task.get_id()
